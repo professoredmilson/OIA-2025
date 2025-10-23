@@ -1,322 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz ONIA 2024 - Inteligência Artificial</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px 0;
-        }
-        .quiz-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .card {
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            border: none;
-            margin-bottom: 20px;
-        }
-        .question-card {
-            transition: all 0.3s ease;
-        }
-        .option-btn {
-            text-align: left;
-            padding: 15px 20px;
-            margin: 8px 0;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-        .option-btn:hover {
-            transform: translateX(5px);
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-        .option-btn.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        .option-btn.correct {
-            background: #4caf50;
-            color: white;
-            border-color: #4caf50;
-        }
-        .option-btn.incorrect {
-            background: #f44336;
-            color: white;
-            border-color: #f44336;
-        }
-        .progress {
-            height: 8px;
-            border-radius: 10px;
-        }
-        .feedback {
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 15px;
-            animation: slideIn 0.5s ease;
-        }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .score-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-        }
-        .score-number {
-            font-size: 72px;
-            font-weight: bold;
-        }
-        .btn-custom {
-            border-radius: 25px;
-            padding: 12px 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .header-title {
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz ONIA 2024 - Inteligência Artificial</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px 0; }
+.quiz-container { max-width: 800px; margin: auto; }
+.card { border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); border: none; margin-bottom: 20px; }
+.option-btn { text-align: left; padding: 15px 20px; margin: 8px 0; border: 2px solid #e0e0e0; border-radius: 12px; background: white; transition: all 0.3s ease; }
+.option-btn:hover { transform: translateX(5px); border-color: #667eea; background: #f8f9ff; }
+.option-btn.correct { background: #4caf50 !important; color: white; border-color: #4caf50; }
+.option-btn.incorrect { background: #f44336 !important; color: white; border-color: #f44336; }
+.feedback { padding: 15px; border-radius: 12px; margin-top: 15px; animation: slideIn 0.5s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.score-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 20px; text-align: center; }
+.score-number { font-size: 72px; font-weight: bold; }
+.header-title { color: white; text-align: center; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+.progress { height: 8px; border-radius: 10px; }
+</style>
 </head>
 <body>
-    <div class="container quiz-container">
-        <h1 class="header-title">
-            <i class="fas fa-brain"></i> Quiz ONIA 2024
-            <br><small class="fs-5">Olimpíada Nacional de Inteligência Artificial</small>
-        </h1>
+<div class="container quiz-container">
+<h1 class="header-title">🧠 Quiz ONIA 2024<br><small class="fs-5">Olimpíada Nacional de Inteligência Artificial</small></h1>
+<div id="quizContent"></div>
+</div>
 
-        <div id="quizContent"></div>
-    </div>
+<script>
+const questions = [
+{
+question: "Algumas coisas acontecem devido à inteligência, outras por acaso. Qual está relacionada ao acaso?",
+options: ["Jogador de xadrez", "Estudante resolvendo problemas", "Dados sendo lançados", "Cientista em laboratório", "Programador escrevendo código"],
+correct: 2,
+explanation: "O lançamento de dados é um evento aleatório, dependente do acaso."
+},
+{
+question: "Em qual situação se vê uma aplicação de IA?",
+options: ["Calculadora básica", "Relógio digital", "Micro-ondas aquecendo comida", "Sistema de reconhecimento facial", "Porta automática abrindo"],
+correct: 3,
+explanation: "Reconhecimento facial usa IA para aprender padrões e tomar decisões."
+},
+{
+question: "Qual das alternativas NÃO teve assistência humana para evoluir?",
+options: ["Cachorro doméstico", "Trigo cultivado", "Borboleta selvagem", "Cavalo de corrida", "Rosa híbrida"],
+correct: 2,
+explanation: "A borboleta selvagem evoluiu naturalmente, sem interferência humana."
+},
+{
+question: "Um assistente virtual precisa identificar o tipo de emoção em uma voz humana. Qual algoritmo é mais adequado?",
+options: ["Reconhecimento óptico de caracteres", "Classificação de sentimentos", "Cálculo aritmético simples", "Reconhecimento de objetos", "Simulação de Monte Carlo"],
+correct: 1,
+explanation: "Classificação de sentimentos analisa tons e padrões de voz para identificar emoções."
+},
+{
+question: "Qual das opções demonstra aprendizado supervisionado?",
+options: ["IA que aprende a jogar sozinha", "IA que recebe exemplos rotulados para treinar", "IA que reage a estímulos aleatórios", "IA que faz previsões sem dados prévios", "IA baseada apenas em regras fixas"],
+correct: 1,
+explanation: "No aprendizado supervisionado, a IA aprende a partir de exemplos com respostas conhecidas."
+},
+{
+question: "Na sequência: 3, 5, 7, 9, 11, 13, 15, ?, 19 — qual número falta?",
+options: ["11", "13", "15", "17", "19"],
+correct: 3,
+explanation: "A sequência é de números ímpares consecutivos. Após 15 vem 17."
+},
+{
+question: "Sobre produção manual e mecanizada de correntes, qual é correta sobre IA?",
+options: ["Automação simples é IA", "Não há inteligência em processos repetitivos", "Automação requer inteligência humana", "Há IA apenas no processo mecanizado", "Automação simples não é IA"],
+correct: 4,
+explanation: "Automação repetitiva não é IA — esta requer aprendizado e adaptação."
+},
+{
+question: "Na mitologia, Talos era um autômato de bronze. O que o relaciona à IA moderna?",
+options: ["Aprendia sozinho", "Executava tarefas programadas", "Tinha consciência", "Era controlado por humano", "Criava outros autômatos"],
+correct: 1,
+explanation: "Talos realizava tarefas pré-programadas, como sistemas atuais de IA."
+},
+{
+question: "Um sistema de IA precisa identificar padrões de consumo de energia em uma cidade. Qual tipo de aprendizado se aplica?",
+options: ["Supervisionado", "Não supervisionado", "Por reforço", "Baseado em regras", "Evolutivo"],
+correct: 1,
+explanation: "Aprendizado não supervisionado agrupa dados similares sem rótulos prévios."
+},
+{
+question: "Um robô precisa planejar rotas para entregar encomendas. O algoritmo ideal é:",
+options: ["Árvore de decisão", "Busca em largura (BFS)", "Rede neural convolucional", "Regressão linear", "Random Forest"],
+correct: 1,
+explanation: "Busca em largura (BFS) é eficiente para encontrar o caminho mais curto em grafos ou mapas."
+},
+{
+question: "Sobre algoritmos DFS e BFS, analise: DFS explora primeiro um ramo; BFS explora nível a nível. Qual é a principal diferença?",
+options: ["Velocidade de cálculo", "Forma de percorrer os nós", "Uso de cores", "Quantidade de dados", "Aplicação em imagens"],
+correct: 1,
+explanation: "DFS vai fundo em um ramo antes de voltar; BFS percorre todos os vizinhos primeiro."
+},
+{
+question: "Um bebê aprende a chamar 'papai' qualquer homem. Que tipo de erro de IA isso representa?",
+options: ["Overfitting", "Generalização incorreta", "Aprendizado supervisionado", "Perda de dados", "Aprendizado reforçado"],
+correct: 1,
+explanation: "O bebê generaliza demais — comportamento comum em modelos com poucos exemplos."
+},
+{
+question: "Uma IA de trânsito analisa comandos: frente, direita, ré, esquerda. Qual conceito está sendo aplicado?",
+options: ["Lógica sequencial e estados", "Visão computacional", "Processamento de linguagem natural", "Rede neural convolucional", "Deepfake"],
+correct: 0,
+explanation: "A IA segue instruções com base em lógica e estado atual — típico de sistemas autônomos."
+},
+{
+question: "IA ordena palavras 'cdab' comparando pares. Qual processo isso representa?",
+options: ["Busca linear", "Ordenação por seleção", "Ordenação por bolha (bubble sort)", "Recursão", "Aprendizado reforçado"],
+correct: 2,
+explanation: "O algoritmo bubble sort compara pares vizinhos até ordenar a sequência."
+},
+{
+question: "Qual o ponto principal do argumento do quarto chinês de Searle?",
+options: ["Máquinas aprendem idiomas", "Seguir regras não implica compreensão", "Pessoas aprendem chinês sem professor", "Computadores precisam de mais processamento", "Como criar tradução automática"],
+correct: 1,
+explanation: "Searle diz que seguir regras não significa entender — falta compreensão real."
+},
+{
+question: "Qual exemplo representa melhor o teste de Turing?",
+options: ["Robô que joga xadrez", "Assistente virtual que conversa naturalmente", "Reconhecimento facial", "Robô industrial", "Programa de cálculos"],
+correct: 1,
+explanation: "O teste de Turing avalia se uma IA consegue conversar como um humano."
+},
+{
+question: "Que medida reduz danos de deepfakes em golpes financeiros?",
+options: ["Perguntas de segurança com familiares", "Antivírus para deepfakes", "Evitar fotos online", "Ignorar mensagens", "Desativar câmeras"],
+correct: 0,
+explanation: "Códigos ou perguntas pessoais são boas defesas contra deepfakes."
+},
+{
+question: "Como melhorar a precisão da IA em imagens?",
+options: ["Alta resolução apenas", "Focar em cores", "Evitar ângulos incomuns", "Treinar com variações de ângulo e iluminação", "Treinar com um só tipo de objeto"],
+correct: 3,
+explanation: "A diversidade de dados (ângulo, luz, contexto) torna a IA mais robusta."
+},
+{
+question: "Quais são riscos da IA em fake news?",
+options: ["Criação automática e amplificação de desinformação", "Melhorar leitura crítica", "Reduzir acesso à informação", "Aumentar a verificação de fatos", "Corrigir textos automaticamente"],
+correct: 0,
+explanation: "A IA pode criar e espalhar fake news com aparência convincente."
+},
+{
+question: "Em casos de reconhecimento facial com erro, quais desafios éticos estão envolvidos?",
+options: ["Viés nos dados e falta de políticas públicas", "Alto custo dos sensores", "Falta de câmeras modernas", "Excesso de transparência", "Pouco uso da tecnologia"],
+correct: 0,
+explanation: "Erros de IA podem ocorrer por viés nos dados e falta de regulação ética adequada."
+}
+];
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const questions = [
-            {
-                id: 1,
-                question: "Algumas coisas acontecem devido à inteligência, outras acontecem por acaso. Qual das imagens está relacionada ao acaso?",
-                options: ["Jogador de xadrez", "Estudante resolvendo problemas", "Dados sendo lançados", "Cientista em laboratório", "Programador escrevendo código"],
-                correct: 2,
-                explanation: "O lançamento de dados é um exemplo clássico de evento aleatório, onde o resultado não depende de inteligência, mas sim do acaso."
-            },
-            {
-                id: 2,
-                question: "Inteligência Artificial (IA) é a capacidade das máquinas de realizar tarefas que normalmente exigiriam inteligência humana. Em qual das seguintes situações se vê uma aplicação de IA?",
-                options: ["Calculadora fazendo contas básicas", "Relógio mostrando as horas", "Micro-ondas aquecendo comida", "Sistema de reconhecimento facial", "Porta automática abrindo"],
-                correct: 3,
-                explanation: "Reconhecimento facial é uma aplicação de IA que envolve aprendizado de padrões complexos e tomada de decisões, não apenas automação simples."
-            },
-            {
-                id: 3,
-                question: "Dentre as alternativas a seguir, assinale aquela que NÃO teve assistência de seres humanos para 'evoluir'.",
-                options: ["Cachorro doméstico", "Trigo cultivado", "Borboleta selvagem", "Cavalo de corrida", "Rosa híbrida"],
-                correct: 2,
-                explanation: "A borboleta selvagem evoluiu naturalmente através da seleção natural, sem intervenção humana direta, diferente das outras opções que passaram por seleção artificial."
-            },
-            {
-                id: 4,
-                question: "Você quer testar se uma IA de reconhecimento de imagem funciona e pede que identifique polígonos em ordem CRESCENTE pelo número de lados. Considerando: A=triângulo, B=hexágono, C=quadrado, D=círculo, E=pentágono. Qual seria a resposta correta?",
-                options: ["ABCDE", "EDCBA", "CDEAB", "BAEDC", "BADEC"],
-                correct: 0,
-                explanation: "A ordem crescente por número de lados é: triângulo (3), quadrado (4), pentágono (5), hexágono (6), círculo (infinito), ou seja, ACEBD. Nenhuma das opções reflete exatamente isso, mas a correta seria ACEBD."
-            },
-            {
-                id: 5,
-                question: "Observe polígonos coloridos. O polígono C apresenta uma distinção dos demais. Qual seria esta distinção?",
-                options: ["Tridimensionalidade", "Número de letras no nome", "Número de tons de cor", "Variação da claridade da cor", "Letra inicial da cor"],
-                correct: 3,
-                explanation: "O polígono C apresenta variação de claridade na cor, com gradiente ou tonalidades diferentes, enquanto os outros têm cor sólida uniforme."
-            },
-            {
-                id: 6,
-                question: "Uma máquina inteligente pode inferir resultados descobrindo padrões lógicos. Na sequência: 3, 5, 7, 9, 11, 13, 15, ?, 19. Qual o número desconhecido?",
-                options: ["11", "13", "15", "17", "19"],
-                correct: 3,
-                explanation: "Excelente! A sequência são números ímpares consecutivos. Após 15 vem 17, e depois 19. É um padrão de +2 a cada termo."
-            },
-            {
-                id: 7,
-                question: "Sobre produção manual vs mecanizada de correntes, qual alternativa está correta sobre IA?",
-                options: ["A simples automação constitui um exemplo de IA", "Não há inteligência em processos repetitivos", "Automação requer o mesmo nível de inteligência que humanos usam", "Há uso de inteligência apenas no processo mecanizado", "Automação de produção não seria considerada aplicação de IA"],
-                correct: 4,
-                explanation: "Perfeito! Automação simples e repetitiva não é IA. IA envolve aprendizado, adaptação e tomada de decisões complexas, não apenas seguir instruções fixas."
-            },
-            {
-                id: 8,
-                question: "Na mitologia grega, Talos era um autômato de bronze. Como ele se relaciona com o conceito moderno de IA?",
-                options: ["Talos seria capaz de aprender, como as IA modernas", "Talos era programado para tarefas específicas, como sistemas de IA", "Talos teria consciência e emoção", "Talos seria controlado por humano", "Talos poderia criar outros autômatos"],
-                correct: 1,
-                explanation: "Correto! Talos, como autômato, executava tarefas predefinidas, similar a muitos sistemas de IA atuais que são programados para funções específicas."
-            },
-            {
-                id: 9,
-                question: "Qual o maior número de cubos que podem ter TODAS as faces azuis? (considere cubos invisíveis na estrutura 3x3x3)",
-                options: ["1", "2", "3", "4", "5"],
-                correct: 0,
-                explanation: "Em uma estrutura 3x3x3, apenas o cubo central interno tem todas as faces não visíveis e pode estar completamente pintado. Portanto, apenas 1 cubo cumpre essa condição."
-            },
-            {
-                id: 10,
-                question: "Em um grafo com caminhos de 'início' a 'fim', qual palavra NÃO pode ser formada seguindo as setas?",
-                options: ["dososo", "papapososo", "de", "papapapos", "dosososo"],
-                correct: 3,
-                explanation: "Excelente análise! A palavra 'papapapos' não pode ser formada porque não existe um caminho válido no grafo que permita essa sequência de letras."
-            },
-            {
-                id: 11,
-                question: "Sobre algoritmos DFS (Profundidade) e BFS (Largura), analise: I-HEIAFGB, II-BADGJLMK, III-MKLJGIDEAC. Qual a classificação correta?",
-                options: ["I-BFS, II-DFS, III-BFS", "I-DFS, II-BFS, III-DFS", "I-DFS, II-BFS, III-DFS", "I-DFS, II-DFS, III-DFS", "I-BFS, II-BFS, III-BFS"],
-                correct: 1,
-                explanation: "Perfeito! Analisando os padrões de busca: I explora em largura primeiro, II vai em profundidade, e III novamente em largura. BFS explora vizinhos próximos; DFS vai fundo antes de retornar."
-            },
-            {
-                id: 12,
-                question: "Sobre o bebê que aprende 'papai' com dados limitados, quais proposições estão corretas? I-Fez associação diferente mas eficiente II-IA reconheceria o pai pelo rosto III-Erro se deve à falta de informações",
-                options: ["I e III", "I e II", "Nenhuma", "Apenas I", "II e III"],
-                correct: 0,
-                explanation: "Muito bem! I e III estão corretas: o bebê fez uma generalização com dados limitados (associou 'papai' a homens de óculos), e o erro vem da falta de exemplos variados, assim como em machine learning."
-            },
-            {
-                id: 13,
-                question: "Um carro parte de F9 virado para F. Comandos: frente 3km, direita 2km, ré 5km, esquerda 1km. Posição final?",
-                options: ["H2", "I5", "I8", "J4", "G3"],
-                correct: 1,
-                explanation: "Seguindo os comandos: F9→F6 (frente 3), F6→H6 (direita 2), H6→H11 (ré 5), ajustando posições no grid, chega-se próximo de I5."
-            },
-            {
-                id: 14,
-                question: "IA ordena 'cdab' comparando pares da esquerda, trocando se errado e voltando ao início. Qual a sequência correta?",
-                options: ["cdab - bacd - abcd", "cdab - dcba - badc - abcd", "cdab - cadb - acdb - acbd - abcd", "cdab - cadb - acdb - abcd", "cdab - acdb - abcd"],
-                correct: 2,
-                explanation: "Seguindo o algoritmo bubble sort modificado: compara c-d (ok), d-a (troca→cadb), volta, c-a (troca→acdb), a-d (ok), d-b (troca→acbd), volta, até acbd→abcd."
-            },
-            {
-                id: 15,
-                question: "Qual é o ponto principal do argumento do quarto chinês de John Searle?",
-                options: ["Máquinas podem aprender qualquer idioma", "Seguir regras não implica compreensão verdadeira", "Pessoas podem aprender chinês sem professor", "Computadores precisam de mais processamento", "Como construir tradução automática"],
-                correct: 1,
-                explanation: "Searle argumenta que seguir regras sintáticas não garante compreensão semântica real. Uma máquina pode parecer inteligente sem entender o que faz."
-            },
-            {
-                id: 16,
-                question: "Qual exemplo representa melhor a aplicação prática do teste de Turing?",
-                options: ["Robô que joga xadrez melhor que humanos", "Assistente virtual que parece conversar como pessoa real", "Sistema de reconhecimento facial", "Robô em linha de produção", "Programa de cálculos matemáticos"],
-                correct: 1,
-                explanation: "O teste de Turing avalia se uma máquina pode simular conversação humana indistinguivelmente. Um assistente virtual convincente é o melhor exemplo dessa aplicação."
-            },
-            {
-                id: 17,
-                question: "Qual medida de segurança ajuda a reduzir danos de deepfakes em golpes financeiros?",
-                options: ["Estabelecer perguntas de segurança com familiares", "Usar antivírus para detectar deepfakes", "Evitar postar fotos nas redes sociais", "Ignorar mensagens de familiares", "Desativar microfones e câmeras"],
-                correct: 0,
-                explanation: "Estabelecer códigos ou perguntas que só familiares reais saibam é uma defesa eficaz contra deepfakes, pois a IA não tem acesso a essas informações pessoais."
-            },
-            {
-                id: 18,
-                question: "Como melhorar a precisão de uma IA para identificar objetos em imagens?",
-                options: ["Treinar apenas com alta resolução", "Focar apenas nas cores dos objetos", "Evitar imagens em posições incomuns", "Aumentar exemplos com variações de ângulo e iluminação", "Treinar com único tipo de objeto"],
-                correct: 3,
-                explanation: "Diversidade no treinamento é fundamental. Incluir variações de ângulo, iluminação, qualidade e contexto torna a IA mais robusta e precisa em diferentes situações."
-            },
-            {
-                id: 19,
-                question: "Quais afirmações tratam de riscos do uso de IA para manipulação e fake news? I-Melhora comunicação II-Gera informações falsas III-Melhora marketing IV-Aumenta precisão maquiando notícia falsa",
-                options: ["I e II", "II e IV", "III e IV", "I, II e IV", "II e III"],
-                correct: 1,
-                explanation: "Correto! II e IV são riscos: IA pode gerar/disseminar fake news (II) e dar aparência de credibilidade a informações falsas (IV). I e III são usos positivos, não riscos."
-            },
-            {
-                id: 20,
-                question: "Sobre o caso de reconhecimento facial que deteve inocente, quais são desafios éticos? I-Falta de diversidade nos dados II-Opinião dos programadores III-Ausência de políticas IV-Incapacidade com jovens",
-                options: ["I, apenas", "II, apenas", "Todas", "I e IV", "I e III"],
-                correct: 4,
-                explanation: "I (viés nos dados de treinamento) e III (falta de regulamentação adequada) são desafios reais. O caso mostra como IA pode ser discriminatória."
-            }
-        ];
+let currentQuestion = 0;
+let score = 0;
 
-        let currentQuestion = 0;
-        let score = 0;
-        let userAnswers = [];
-
-        const feedbackMessages = {
-            correct: [
-                "🎉 Incrível! Você acertou!",
-                "👏 Parabéns! Resposta correta!",
-                "⭐ Excelente! Você está arrasando!",
-                "🚀 Fantástico! Continue assim!",
-                "💡 Brilhante! Acertou em cheio!"
-            ],
-            incorrect: [
-                "😊 Ops! Não foi dessa vez, mas você está aprendendo!",
-                "💪 Quase lá! Continue tentando!",
-                "🌟 Não desanime! Cada erro é um aprendizado!",
-                "📚 Essa foi difícil! Veja a explicação!",
-                "🎯 Quase! Da próxima você acerta!"
-            ]
-        };
-
-        function startQuiz() {
-            showQuestion();
-        }
-
-        function showQuestion() {
-            const q = questions[currentQuestion];
-            const progress = ((currentQuestion) / questions.length) * 100;
-            
-            const html = `
-                <div class="card question-card">
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="badge bg-primary">Questão ${currentQuestion + 1} de ${questions.length}</span>
-                                <span class="text-muted"><i class="fas fa-star"></i> ${score} pontos</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" style="width: ${progress}%"></div>
-                            </div>
-                        </div>
-                        
-                        <h4 class="card-title mb-4">${q.question}</h4>
-                        
-                        <div id="options">
-                            ${q.options.map((opt, idx) => `
-                                <button class="btn option-btn w-100" onclick="selectAnswer(${idx})">
-                                    <strong>${String.fromCharCode(65 + idx)})</strong> ${opt}
-                                </button>
-                            `).join('')}
-                        </div>
-                        
-                        <div id="feedback"></div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('quizContent').innerHTML = html;
-        }
-
-        function selectAnswer(selectedIdx) {
-            const q = questions[currentQuestion];
-            const isCorrect = selectedIdx === q.correct;
-            
-            if (isCorrect) {
-                score
+function startQuiz() { showQuestion(); }
+function showQuestion() {
+ if (currentQuestion >= questions.length) return showScore();
+ const q = questions[currentQuestion];
+ const progress = (currentQuestion / questions.length) * 100;
+ document.getElementById("quizContent").innerHTML = `
+ <div class='card'><div class='card-body'>
+ <div class='d-flex justify-content-between mb-2'>
+ <span class='badge bg-primary'>Questão ${currentQuestion+1}/${questions.length}</span>
+ <span class='text-muted'>${score} pontos</span></div>
+ <div class='progress mb-3'><div class='progress-bar bg-success' style='width:${progress}%'></div></div>
+ <h4>${q.question}</h4>
+ ${q.options.map((opt,i)=>`<button class='btn option-btn w-100' onclick='selectAnswer(${i})'>
+ <strong>${String.fromCharCode(65+i)})</strong> ${opt}</button>`).join("")}
+ <div id='feedback'></div></div></div>`;
+}
+function selectAnswer(selected){
+ const q=questions[currentQuestion];
+ const btns=document.querySelectorAll(".option-btn");
+ btns.forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add("correct");if(i===selected&&i!==q.correct)b.classList.add("incorrect");});
+ const fb=document.getElementById("feedback");
+ if(selected===q.correct){score++;fb.innerHTML=`<div class='feedback bg-success text-white'>✅ Correto!<br><small>${q.explanation}</small></div>`;}
+ else{fb.innerHTML=`<div class='feedback bg-danger text-white'>❌ Errado!<br><small>${q.explanation}</small></div>`;}
+ setTimeout(()=>{currentQuestion++;showQuestion();},3000);
+}
+function showScore(){
+ document.getElementById("quizContent").innerHTML=`
+ <div class='score-card'><h2>🎯 Resultado Final</h2>
+ <div class='score-number'>${score}/${questions.length}</div>
+ <p>${score===questions.length?"Perfeito! 👏":"Você foi muito bem!"}</p>
+ <button class='btn btn-light mt-3' onclick='restartQuiz()'>Reiniciar</button></div>`;
+}
+function restartQuiz(){currentQuestion=0;score=0;showQuestion();}
+startQuiz();
+</script>
+</body>
+</html>
